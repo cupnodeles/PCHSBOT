@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCHS CHATBOT</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-content">
+            <img src="/static/images/pchs-bg.png" alt="PCHSBOT Logo" class="chatbot-logo">
+            <h1>Welcome to PCHSBOT</h1>
+            <button id="start-chat">Start Chatting</button>
+        </div>
+    </div>
+
+    <div class="chat-container" id="chat-container" style="display: none;">
+    <div class="chat-header">
+        <div class="header-logo-container">
+            <img src="/static/images/pchs-bg.png" alt="PCHS Logo" class="header-logo">
+        </div>
+        <div class="header-text-container">
+            <h1>PCHSBOT</h1>
+            <h2>Philippine College of Health and Sciences, Inc.</h2>
+        </div>
+    </div>
+
+    <div class="chat-content">
+        <div class="chat-box" id="chat-box"></div>
+
+        <div class="quick-questions" id="quick-questions">
+            <p>Quick questions:</p>
+            <div class="quick-questions-grid">
+                <button class="quick-question">What is PCHS?</button>
+                <button class="quick-question">How to enroll?</button>
+                <button class="quick-question">Courses</button>
+                <button class="quick-question">Location</button>
+            </div>
+        </div>
+
+        <form id="chat-form" class="input-area">
+            <input type="text" id="message-input" placeholder="Type your message here..." autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
