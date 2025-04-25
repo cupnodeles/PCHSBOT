@@ -1,7 +1,12 @@
+from http.server import BaseHTTPRequestHandler
+from flask import Flask, request, jsonify
 import os
+import sys
 from dotenv import load_dotenv
-from flask import Flask, request, render_template, jsonify
 import google.generativeai as genai
+
+# Add the root directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Load environment variables
 load_dotenv()
@@ -2159,7 +2164,7 @@ chat_histories = {}
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return app.send_static_file('index.html')
 
 
 @app.route('/chat', methods=['POST'])
@@ -2192,7 +2197,12 @@ def chat():
             "response": f"Error: {str(e)}",
             "session_id": session_id
         })
+    pass
 
+def handler(request):
+    if request.method == 'POST':
+        return app(request)
+    return app(request)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
