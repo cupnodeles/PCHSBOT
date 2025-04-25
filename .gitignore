@@ -1,2 +1,6 @@
+.venv/
+venv/
 .env
-.render.yaml
+__pycache__/
+.idea/
+*.pyc
