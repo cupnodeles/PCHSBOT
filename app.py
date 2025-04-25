@@ -1,17 +1,12 @@
-from http.server import BaseHTTPRequestHandler
-from flask import Flask, request, jsonify
 import os
-import sys
 from dotenv import load_dotenv
+from flask import Flask, request, render_template, jsonify
 import google.generativeai as genai
-
-# Add the root directory to the Python path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Configure Gemini
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -2164,7 +2159,7 @@ chat_histories = {}
 
 @app.route('/')
 def home():
-    return app.send_static_file('index.html')
+    return render_template('index.html')
 
 
 @app.route('/chat', methods=['POST'])
@@ -2172,37 +2167,17 @@ def chat():
     user_input = request.form['message']
     session_id = request.form.get('session_id', 'default')
 
-    # Initialize history if new session
-    if session_id not in chat_histories:
-        chat_histories[session_id] = []
-
-    # Get history for this session
-    history = chat_histories[session_id]
-
     try:
-        # Generate response (with history if needed)
         response = model.generate_content(user_input)
-        bot_response = response.text
-
-        # Save to history
-        history.append({"user": user_input, "bot": bot_response})
-
         return jsonify({
-            "response": bot_response,
+            "response": response.text,
             "session_id": session_id
         })
-
     except Exception as e:
         return jsonify({
-            "response": f"Error: {str(e)}",
-            "session_id": session_id
-        })
-    pass
+            "error": str(e)
+        }), 500
 
-def handler(request):
-    if request.method == 'POST':
-        return app(request)
-    return app(request)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
