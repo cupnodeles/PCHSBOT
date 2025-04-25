@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: pchs-chatbot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: GEMINI_API_KEY
+        value: AIzaSyCfXjSr6RZakAQx2OMkE7VpkX0OpB5zyBA
+    env:
+      - PYTHON_VERSION: 3.9.13
